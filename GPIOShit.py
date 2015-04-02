@@ -38,3 +38,11 @@ def lights_off():
             #GPIO.cleanup()
     except Exception:
         pass
+
+
+def cleanup():
+    """
+    Cleanup memory shit or whatever this does
+    :return: None
+    """
+    GPIO.cleanup()

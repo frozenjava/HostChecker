@@ -2,8 +2,19 @@ import sys
 import os
 import time
 import GPIOShit
+import signal
 
 LOG_PATH = "/tmp/HostChecker.log"
+
+
+def sig_handler(signal, frame):
+    """
+    Handle signals
+    :param signal: the signal
+    :param frame: the frame
+    :return: None
+    """
+    GPIOShit.cleanup()
 
 
 def ping_host(host):
@@ -56,7 +67,7 @@ def main(host):
         current_time = int(time.time())
         current_hour = int(time.localtime(current_time)[3])
 
-        if (current_hour >= 22) or (current_hour <= 7):
+        if (current_hour >= 22) or (current_hour <= 3):
         
             if not os.path.isfile(LOG_PATH):
                 write_timestamp()
@@ -65,7 +76,6 @@ def main(host):
             seconds_past = current_time - logged_time
 
             if ping_host(host) == 0:
-                print "ping"
                 if seconds_past >= 20*60:
                     GPIOShit.lights_on()
                     time.sleep(5 * 60)
@@ -82,4 +92,5 @@ def main(host):
 if __name__ == "__main__":
     if len(sys.argv) == 2:
         host = sys.argv[1]
+        signal.signal(signal.SIGINT, sig_handler)
         main(host)
