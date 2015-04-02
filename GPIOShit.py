@@ -21,7 +21,6 @@ def lights_on():
         for i in pinList:
             GPIO.output(i, GPIO.LOW)
             time.sleep(.5)
-            #GPIO.cleanup()
     except Exception:
         pass
 
@@ -35,7 +34,6 @@ def lights_off():
         for i in pinList:
             GPIO.output(i, GPIO.HIGH)
             time.sleep(.5)
-            #GPIO.cleanup()
     except Exception:
         pass
 

@@ -15,6 +15,7 @@ def sig_handler(signal, frame):
     :return: None
     """
     GPIOShit.cleanup()
+    sys.exit()
 
 
 def ping_host(host):
