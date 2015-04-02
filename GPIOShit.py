@@ -12,22 +12,29 @@ for i in pinList:
 
 
 # main loop
-def lightson():
+def lights_on():
+    """
+    Turn on the lights
+    :return: None
+    """
     try:
-       while True:
-
-          for i in pinList:
-             GPIO.output(i, GPIO.LOW)
-             time.sleep(.5)
+        for i in pinList:
+            GPIO.output(i, GPIO.LOW)
+            time.sleep(.5)
+            #GPIO.cleanup()
     except Exception:
         pass
 
 
-def lightsoff():
+def lights_off():
+    """
+    TUrn off the lights
+    :return: None
+    """
     try:
-       while True:
-          for i in pinList:
-             GPIO.output(i, GPIO.HIGH)
-             time.sleep(.5)
+        for i in pinList:
+            GPIO.output(i, GPIO.HIGH)
+            time.sleep(.5)
+            #GPIO.cleanup()
     except Exception:
         pass

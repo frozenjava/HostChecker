@@ -1,9 +1,10 @@
 import sys
 import os
 import time
-import signal
+import GPIOShit
 
 LOG_PATH = "/tmp/HostChecker.log"
+
 
 def ping_host(host):
     """
@@ -16,18 +17,22 @@ def ping_host(host):
 
     return status
 
+
 def write_timestamp():
     """
     Writes the current timestamp to a file.
+    :return: None
     """
 
     f = open(LOG_PATH, "w")
     f.write(str(int(time.time())))
     f.close()
 
+
 def read_timestamp():
     """
     Writes the current timestamp to a file.
+    :return timestamp: The timestamp to return
     """
 
     f = open(LOG_PATH, "r")
@@ -44,7 +49,9 @@ def main(host):
     :return: None
     """
 
-    while True:
+    sebkinne_is_a_wizard = True
+
+    while sebkinne_is_a_wizard:
 
         current_time = int(time.time())
         current_hour = int(time.localtime(current_time)[3])
@@ -60,9 +67,9 @@ def main(host):
             if ping_host(host) == 0:
                 print "ping"
                 if seconds_past >= 20*60:
-                    """ lights_on() """
+                    GPIOShit.lights_on()
                     time.sleep(5 * 60)
-                    """ lights_off() """
+                    GPIOShit.lights_off()
                 write_timestamp()
 
         else:
