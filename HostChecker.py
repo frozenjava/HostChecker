@@ -2,28 +2,6 @@ import sys
 import os
 import time
 
-import RPi.GPIO as GPIO
-
-
-def lightson(pin_list):
-    try:
-       while True:
-          for i in pin_list:
-             GPIO.output(i, GPIO.LOW)
-             time.sleep(.5)
-    except Exception:
-        pass
-
-
-def lightsoff(pin_list):
-    try:
-       while True:
-          for i in pin_list:
-             GPIO.output(i, GPIO.HIGH)
-             time.sleep(.5)
-    except Exception:
-        pass
-
 
 def ping_host(host):
     """
