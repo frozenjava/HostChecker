@@ -1,29 +1,9 @@
 import sys
 import os
 import time
+import signal
 
-import RPi.GPIO as GPIO
-
-
-def lightson(pin_list):
-    try:
-       while True:
-          for i in pin_list:
-             GPIO.output(i, GPIO.LOW)
-             time.sleep(.5)
-    except Exception:
-        pass
-
-
-def lightsoff(pin_list):
-    try:
-       while True:
-          for i in pin_list:
-             GPIO.output(i, GPIO.HIGH)
-             time.sleep(.5)
-    except Exception:
-        pass
-
+LOG_PATH = "/tmp/HostChecker.log"
 
 def ping_host(host):
     """
@@ -32,67 +12,67 @@ def ping_host(host):
     :return status: Is the host around, true or false
     """
 
-    status = os.system("ping host -c 1")
+    status = os.system("ping " + host + " -c 1 -W 1 > /dev/null")
 
     return status
 
-
-def lights_off():
+def write_timestamp():
     """
-    Do nothing for now
-    :return:
+    Writes the current timestamp to a file.
     """
 
+    f = open(LOG_PATH, "w")
+    f.write(str(int(time.time())))
+    f.close()
 
-def main(args):
+def read_timestamp():
+    """
+    Writes the current timestamp to a file.
+    """
+
+    f = open(LOG_PATH, "r")
+    timestamp = int(f.read())
+    f.close()
+
+    return timestamp
+
+
+def main(host):
     """
     The main program
     :param args: The arguments for the program
     :return: None
     """
 
-    # The host to ping
-    host = args[1]
-
-    pinList = [17, 27, 22, 23]
-
-    log_file = "/tmp/HostChecker.log"
-
-    sebkinne = "is_a_wizard"
-
-    while sebkinne == "is_a_wizard":
+    while True:
 
         current_time = int(time.time())
+        current_hour = int(time.localtime(current_time)[3])
 
-        if time.localtime(time.time())[3] > 22 < 3:
+        if (current_hour >= 22) or (current_hour <= 7):
+        
+            if not os.path.isfile(LOG_PATH):
+                write_timestamp()
 
-            if os.exists(log_file):
-                f = open(log_file, "w")
-                f.write(str(current_time))
-                f.close()
-
-            f = open(log_file, "r")
-            previous_time = int(f.read())
-            f.close()
-
-            seconds_past = current_time - previous_time
+            logged_time = read_timestamp()
+            seconds_past = current_time - logged_time
 
             if ping_host(host) == 0:
+                print "ping"
+                if seconds_past >= 20*60:
+                    """ lights_on() """
+                    time.sleep(5 * 60)
+                    """ lights_off() """
+                write_timestamp()
 
-                #if minutes_past > 20*60:
+        else:
+            print "Not between 22:00 and 03:00"
+            time.sleep(4)
 
-                f = open(log_file, "w")
-                f.write(str(current_time))
-                f.close()
+        time.sleep(1)
 
-            else:
-
-                if seconds_past > 20*60:
-                    lights_off()
-
-
-
-        time.sleep(5)
 
 if __name__ == "__main__":
-    main(sys.argv)
+    if len(sys.argv) == 2:
+        host = sys.argv[1]
+        main(host)
