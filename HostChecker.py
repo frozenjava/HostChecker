@@ -79,7 +79,7 @@ def main(host):
             if ping_host(host) == 0:
                 if seconds_past >= 20*60:
                     GPIOShit.lights_on()
-                    time.sleep(5 * 60)
+                    time.sleep(5*60)
                     GPIOShit.lights_off()
                 write_timestamp()
 
