@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import time
 
 GPIO.setmode(GPIO.BCM)
-# init list with pin numbers
+# arrays for pin numbers
 pinListAll = [17, 27, 22, 23]
 pinListOn = [17, 27]
 pinListOff = [22, 23]
