@@ -3,10 +3,12 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 # init list with pin numbers
-pinList = [17, 27, 22, 23]
+pinListAll = [17, 27, 22, 23]
+pinListOn = [17, 27]
+pinListOff = [22, 23]
 # loop through pins and set mode and state to 'low'
  
-for i in pinList:
+for i in pinListAll:
     GPIO.setup(i, GPIO.OUT)
     GPIO.output(i, GPIO.HIGH)
 
@@ -18,22 +20,26 @@ def lights_on():
     :return: None
     """
     try:
-        for i in pinList:
+        for i in pinListOn:
             GPIO.output(i, GPIO.LOW)
-            time.sleep(.5)
+            time.sleep(1.5)
+	    GPIO.output(i, GPIO.HIGH)
+	    time.sleep(1)
     except Exception:
         pass
 
 
 def lights_off():
     """
-    TUrn off the lights
+    Turn off the lights
     :return: None
     """
     try:
-        for i in pinList:
-            GPIO.output(i, GPIO.HIGH)
-            time.sleep(.5)
+        for i in pinListOff:
+            GPIO.output(i, GPIO.LOW)
+            time.sleep(1.5)
+	    GPIO.output(i, GPIO.HIGH)
+	    time.sleep(1)
     except Exception:
         pass
 

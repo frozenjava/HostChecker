@@ -68,7 +68,7 @@ def main(host):
         current_time = int(time.time())
         current_hour = int(time.localtime(current_time)[3])
 
-        if (current_hour >= 22) or (current_hour <= 3):
+        if (current_hour >= 21) or (current_hour <= 3):
         
             if not os.path.isfile(LOG_PATH):
                 write_timestamp()
@@ -84,7 +84,6 @@ def main(host):
                 write_timestamp()
 
         else:
-            print "Not between 22:00 and 03:00"
             time.sleep(4)
 
         time.sleep(1)
